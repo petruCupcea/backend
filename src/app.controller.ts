@@ -1,18 +1,10 @@
 import { Body, Controller, Get, Header, HttpCode, Post } from '@nestjs/common';
-import { AppService } from './app.service';
 import { OperationsService, RequestStructure, ResponseStructure } from "./shared";
 
 
 @Controller()
 export class AppController {
   constructor(private readonly operationsService: OperationsService) {
-  }
-
-
-  @Get('/mentenanta.txt')
-  @HttpCode(200)
-  checkServerAvailability() {
-    return '';
   }
 
 

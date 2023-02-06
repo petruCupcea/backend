@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { FindManyOptions, Repository } from "typeorm";
+import { Repository } from "typeorm";
 
 import { OperationsService, RequestStructure, ResponseStructure } from "src/shared";
 
@@ -22,8 +22,7 @@ export class ReadCategories {
   private getCategories(): (data: RequestStructure) => Promise<ResponseStructure> {
     return () => {
       return new Promise((resolve) => {
-        const options: FindManyOptions = {order: {index: 'ASC'}};
-        this.repository.find(options).then((data: Array<Categories>) => {
+        this.repository.find().then((data: Array<Categories>) => {
           const dataToReturn = new ResponseStructure('success', data);
           console.log(data);
           resolve(dataToReturn);
