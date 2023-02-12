@@ -24,7 +24,6 @@ export class ReadCategories {
       return new Promise((resolve) => {
         this.repository.find().then((data: Array<Categories>) => {
           const dataToReturn = new ResponseStructure('success', data);
-          console.log(data);
           resolve(dataToReturn);
         }).catch((err) => {
           console.log(err);
