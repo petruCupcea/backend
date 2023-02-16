@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Header, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, Header, HttpCode, Post } from '@nestjs/common';
 import { OperationsService, RequestStructure, ResponseStructure } from "./shared";
 
 
@@ -10,7 +10,7 @@ export class AppController {
 
   @Post('/json_processor')
   @HttpCode(200)
-  @Header('Content-Type', 'application/json;charset=UTF-8')
+  @Header('Content-Type', 'application/json; charset=UTF-8')
   jsonProcessor(@Body() body: RequestStructure): Promise<ResponseStructure> {
     const validateData = this.validateRequestData(body);
     if (!validateData.isValid) {

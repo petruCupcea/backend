@@ -20,6 +20,9 @@ import { CategoriesModule } from "./categories";
       database: environment.DB_NAME,
       autoLoadEntities: true,
       synchronize: false,
+      extra: {
+        charset: 'utf8mb4_general_ci'
+      }
     }),
     SharedModule,
     CategoriesModule,
