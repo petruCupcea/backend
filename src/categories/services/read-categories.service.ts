@@ -17,6 +17,7 @@ export class ReadCategories {
   ) {
     this.operationsService.registerOperation('get_groups', this.getGroups());
     this.operationsService.registerOperation('get_categories', this.getCategories());
+    this.operationsService.registerOperation('get_subcategories', this.getSubCategories());
   }
 
 
@@ -39,14 +40,32 @@ export class ReadCategories {
 
 
   private getCategories(): (data: RequestStructure) => Promise<ResponseStructure> {
-    return () => {
+    return (dataReceived) => {
       return new Promise((resolve) => {
-        this.repository.find({where: {groupId: 1}}).then((data: Array<Categories>) => {
+        this.repository.find({where: {groupId: dataReceived.payload.groupId}}).then((data: Array<Categories>) => {
           const dataToReturn = new ResponseStructure('success', data);
           resolve(dataToReturn);
         }).catch((err) => {
           console.log(err);
-          const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "get_groups" failed!`});
+          const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "get_categories" failed!`});
+          resolve(errorResponse);
+        });
+
+        return resolve;
+      });
+    }
+  }
+
+
+  private getSubCategories(): (data: RequestStructure) => Promise<ResponseStructure> {
+    return (dataReceived) => {
+      return new Promise((resolve) => {
+        this.repository.find({where: {groupId: dataReceived.payload.categoryId}}).then((data: Array<Categories>) => {
+          const dataToReturn = new ResponseStructure('success', data);
+          resolve(dataToReturn);
+        }).catch((err) => {
+          console.log(err);
+          const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "get_subcategories" failed!`});
           resolve(errorResponse);
         });
 
