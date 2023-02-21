@@ -7,11 +7,17 @@ export class Categories {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    length: 60,
+    nullable: false,
+  })
   name: string;
 
 
-  @Column()
+  @Column({
+    length: 16,
+    nullable: false,
+  })
   type: 'group' | 'category';
 
 
