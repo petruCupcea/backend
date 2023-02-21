@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 
 import { SharedModule } from './shared';
 import { CategoriesModule } from "./categories";
+import { AuthenticationModule } from './authentication';
 
 
 @Module({
@@ -26,6 +27,7 @@ import { CategoriesModule } from "./categories";
     }),
     SharedModule,
     CategoriesModule,
+    AuthenticationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

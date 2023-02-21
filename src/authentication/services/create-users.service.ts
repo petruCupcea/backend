@@ -15,15 +15,16 @@ export class CreateUsers {
     private readonly repository: Repository<Users>,
     private readonly operationsService: OperationsService,
   ) {
-    this.operationsService.registerOperation('create_users', this.getUsers());
+    this.operationsService.registerOperation('create_user', this.createUser());
   }
 
 
-  private getUsers(): (data: RequestStructure) => Promise<ResponseStructure> {
-    return () => {
+  private createUser(): (data: RequestStructure) => Promise<ResponseStructure> {
+    return (dataReceived: RequestStructure) => {
       return new Promise((resolve) => {
-        this.repository.find().then((data: Array<Users>) => {
-          const dataToReturn = new ResponseStructure('success', data);
+        const newUser = this.repository.create(this.returnValidUser(dataReceived.payload));
+        this.repository.insert(newUser).then(() => {
+          const dataToReturn = new ResponseStructure('success');
           resolve(dataToReturn);
         }).catch((err) => {
           console.log(err);
@@ -33,6 +34,19 @@ export class CreateUsers {
 
         return resolve;
       });
+    }
+  }
+
+
+  private returnValidUser(user: any): any {
+    if (user.password === user.repeatPassword) {
+      return {
+        name: user.name,
+        surname: user.surname,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        password: user.password,
+      }
     }
   }
 
