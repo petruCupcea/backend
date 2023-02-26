@@ -31,6 +31,7 @@ export class CreateUsers {
           const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "create_users" failed!`});
           resolve(errorResponse);
         });
+        // this.checkUsers();
 
         return resolve;
       });
@@ -48,6 +49,13 @@ export class CreateUsers {
         password: user.password,
       }
     }
+  }
+
+
+  private checkUsers() {
+    this.repository.find().then((data) => {
+      console.log(data);
+    })
   }
 
 }
