@@ -30,7 +30,6 @@ export class ReadUsers {
         }
         this.repository.find(findOptions).then((data: Array<Users>) => {
           let dataToReturn;
-          console.log(data);
           if (data && data.length === 1 && (data[0].password === this.hashPassword(receivedData.payload.password))) {
             dataToReturn = new ResponseStructure('success', {
               message: 'Login Success',
@@ -55,7 +54,6 @@ export class ReadUsers {
 
   private hashPassword(value: string) {
     try {
-      console.log(value);
       return (crypto.createHash('sha256').update(value).digest('hex'));
     } catch (e) {
       console.log(e);

@@ -25,6 +25,7 @@ export class ReadCategories {
     return () => {
       return new Promise((resolve) => {
         this.repository.find({where: {type: 'group'}}).then((data: Array<Categories>) => {
+          console.log(data);
           const dataToReturn = new ResponseStructure('success', data);
           resolve(dataToReturn);
         }).catch((err) => {
@@ -61,6 +62,7 @@ export class ReadCategories {
     return (dataReceived) => {
       return new Promise((resolve) => {
         this.repository.find({where: {groupId: dataReceived.payload.categoryId}}).then((data: Array<Categories>) => {
+          console.log(data);
           const dataToReturn = new ResponseStructure('success', data);
           resolve(dataToReturn);
         }).catch((err) => {
