@@ -3,7 +3,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { Categories } from "./entities";
 import { SharedModule } from "../shared";
 
-import { ReadCategories } from "./services/read-categories.service";
+import { ReadCategories } from "./services";
 
 
 @Module({
