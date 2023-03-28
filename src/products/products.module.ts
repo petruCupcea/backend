@@ -3,16 +3,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { SharedModule } from '../shared';
 
-import { ReadProducts, ReadProductsImages } from './services';
-import { ProductImages, Products } from './entities';
+import { ReadCarBrands, ReadProducts, ReadProductsImages } from './services';
+import { CarBrand, ProductImages, Products } from './entities';
 
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Products, ProductImages]),
+    TypeOrmModule.forFeature([Products, ProductImages, CarBrand]),
     SharedModule,
   ],
   providers: [
+    ReadCarBrands,
     ReadProducts,
     ReadProductsImages,
   ],
