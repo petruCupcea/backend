@@ -49,7 +49,6 @@ export class ReadCategories {
           where: {type: 'group', id: dataReceived.payload?.id},
           take: 1
         }).then((data: Array<Categories>) => {
-          // console.log(data);
           const dataToReturn = new ResponseStructure('success', data);
           resolve(dataToReturn);
         }).catch((err) => {

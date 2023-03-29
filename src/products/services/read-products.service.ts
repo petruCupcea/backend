@@ -19,6 +19,7 @@ export class ReadProducts {
     this.operationsService.registerOperation('get_recommended_products', this.getRecommendedProducts());
     this.operationsService.registerOperation('get_product_by_id', this.getProductById());
     this.operationsService.registerOperation('get_products_by_subcategory', this.getProductsBySubcategory());
+    this.operationsService.registerOperation('get_products_by_group', this.getProductsByGroup());
   }
 
 
@@ -80,6 +81,24 @@ export class ReadProducts {
     return (dataReceived) => {
       return new Promise((resolve) => {
         this.repository.find({where: {subcategoryId: dataReceived.payload.id}}).then((data: Array<Products>) => {
+          const dataToReturn = new ResponseStructure('success', data);
+          resolve(dataToReturn);
+        }).catch((err) => {
+          console.log(err);
+          const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "get_products_by_subcategory" failed!`});
+          resolve(errorResponse);
+        });
+
+        return resolve;
+      });
+    }
+  }
+
+
+  private getProductsByGroup(): (data: RequestStructure) => Promise<ResponseStructure> {
+    return (dataReceived) => {
+      return new Promise((resolve) => {
+        this.repository.find({where: {groupId: dataReceived.payload.id}, take: 8}).then((data: Array<Products>) => {
           const dataToReturn = new ResponseStructure('success', data);
           resolve(dataToReturn);
         }).catch((err) => {
