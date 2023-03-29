@@ -16,6 +16,8 @@ export class ReadProducts {
     private readonly operationsService: OperationsService,
   ) {
     this.operationsService.registerOperation('get_products', this.getProducts());
+    this.operationsService.registerOperation('get_recommended_products', this.getRecommendedProducts());
+    this.operationsService.registerOperation('get_product_by_id', this.getProductById());
     this.operationsService.registerOperation('get_products_by_subcategory', this.getProductsBySubcategory());
   }
 
@@ -29,6 +31,42 @@ export class ReadProducts {
         }).catch((err) => {
           console.log(err);
           const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "get_products" failed!`});
+          resolve(errorResponse);
+        });
+
+        return resolve;
+      });
+    }
+  }
+
+
+  private getRecommendedProducts(): (data: RequestStructure) => Promise<ResponseStructure> {
+    return () => {
+      return new Promise((resolve) => {
+        this.repository.find({take: 8}).then((data: Array<Products>) => {
+          const dataToReturn = new ResponseStructure('success', data);
+          resolve(dataToReturn);
+        }).catch((err) => {
+          console.log(err);
+          const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "get_products" failed!`});
+          resolve(errorResponse);
+        });
+
+        return resolve;
+      });
+    }
+  }
+
+
+  private getProductById(): (data: RequestStructure) => Promise<ResponseStructure> {
+    return (dataReceived) => {
+      return new Promise((resolve) => {
+        this.repository.find({where: {id: dataReceived.payload.productId}, take: 1}).then((data: Array<Products>) => {
+          const dataToReturn = new ResponseStructure('success', data);
+          resolve(dataToReturn);
+        }).catch((err) => {
+          console.log(err);
+          const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "get_product_by_id" failed!`});
           resolve(errorResponse);
         });
 

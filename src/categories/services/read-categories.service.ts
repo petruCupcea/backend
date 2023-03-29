@@ -16,8 +16,10 @@ export class ReadCategories {
     private readonly operationsService: OperationsService,
   ) {
     this.operationsService.registerOperation('get_groups', this.getGroups());
+    this.operationsService.registerOperation('get_group_by_id', this.getGroupById());
     this.operationsService.registerOperation('get_categories', this.getCategories());
     this.operationsService.registerOperation('get_subcategories', this.getSubCategories());
+    this.operationsService.registerOperation('get_subcategory_by_id', this.getSubCategoryById());
   }
 
 
@@ -31,6 +33,28 @@ export class ReadCategories {
         }).catch((err) => {
           console.log(err);
           const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "get_groups" failed!`});
+          resolve(errorResponse);
+        });
+
+        return resolve;
+      });
+    }
+  }
+
+
+  private getGroupById(): (data: RequestStructure) => Promise<ResponseStructure> {
+    return (dataReceived) => {
+      return new Promise((resolve) => {
+        this.repository.find({
+          where: {type: 'group', id: dataReceived.payload?.id},
+          take: 1
+        }).then((data: Array<Categories>) => {
+          // console.log(data);
+          const dataToReturn = new ResponseStructure('success', data);
+          resolve(dataToReturn);
+        }).catch((err) => {
+          console.log(err);
+          const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "get_group_by_id" failed!`});
           resolve(errorResponse);
         });
 
@@ -68,6 +92,28 @@ export class ReadCategories {
         }).catch((err) => {
           console.log(err);
           const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "get_subcategories" failed!`});
+          resolve(errorResponse);
+        });
+
+        return resolve;
+      });
+    }
+  }
+
+
+  private getSubCategoryById(): (data: RequestStructure) => Promise<ResponseStructure> {
+    return (dataReceived) => {
+      return new Promise((resolve) => {
+        this.repository.find({
+          where: {id: dataReceived.payload?.id},
+          take: 1
+        }).then((data: Array<Categories>) => {
+          // console.log(data);
+          const dataToReturn = new ResponseStructure('success', data);
+          resolve(dataToReturn);
+        }).catch((err) => {
+          console.log(err);
+          const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "get_group_by_id" failed!`});
           resolve(errorResponse);
         });
 
