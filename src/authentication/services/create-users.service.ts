@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 
 import { OperationsService, RequestStructure, ResponseStructure } from 'src/shared';
 
-import { Users } from '../entities';
+import { Users } from '../../shared/entities';
 
 
 @Injectable()
@@ -31,7 +31,7 @@ export class CreateUsers {
           const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "create_users" failed!`});
           resolve(errorResponse);
         });
-        // this.checkUsers();
+        this.checkUsers();
 
         return resolve;
       });

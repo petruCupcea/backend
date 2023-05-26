@@ -5,7 +5,7 @@ import * as crypto from 'crypto';
 
 import { OperationsService, RequestStructure, ResponseStructure } from 'src/shared';
 
-import { Users } from '../entities';
+import { Users } from '../../shared/entities';
 
 
 @Injectable()
@@ -33,6 +33,7 @@ export class ReadUsers {
           if (data && data.length === 1 && (data[0].password === this.hashPassword(receivedData.payload.password))) {
             dataToReturn = new ResponseStructure('success', {
               message: 'Login Success',
+              userId: data[0].id,
             });
           } else {
             dataToReturn = new ResponseStructure('error', {
