@@ -4,27 +4,29 @@ import { Repository } from 'typeorm';
 
 import { OperationsService, RequestStructure, ResponseStructure } from '../../shared';
 
-import { Products } from '../entities';
+import { UserProductEntity } from '../entities';
 
 
 @Injectable()
-export class DeleteProductService {
+export class DeleteUserProducts {
 
   constructor(
-    @InjectRepository(Products)
-    private readonly repository: Repository<Products>,
+    @InjectRepository(UserProductEntity)
+    private readonly repository: Repository<UserProductEntity>,
     private readonly operationsService: OperationsService,
   ) {
-    this.operationsService.registerOperation('delete_product', this.deleteProduct());
+    this.operationsService.registerOperation('delete_user_product', this.deleteUserProduct());
   }
 
 
-  private deleteProduct(): (data: RequestStructure) => Promise<ResponseStructure> {
+  private deleteUserProduct(): (data: RequestStructure) => Promise<ResponseStructure> {
     return (dataReceived: RequestStructure) => {
       return new Promise((resolve) => {
-        console.log(dataReceived);
-        const productToDelete = this.repository.create(dataReceived.payload);
-        this.repository.remove(productToDelete).then(() => {
+        this.repository.createQueryBuilder()
+          .delete()
+          .from(UserProductEntity)
+          .where("productId = :id", {id: dataReceived.payload.productId})
+          .execute().then(() => {
           const dataToReturn = new ResponseStructure('success');
           resolve(dataToReturn);
         }).catch((err) => {

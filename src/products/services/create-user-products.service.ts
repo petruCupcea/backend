@@ -15,7 +15,7 @@ export class CreateUserProducts {
     private readonly repository: Repository<UserProductEntity>,
     private readonly operationsService: OperationsService,
   ) {
-    this.operationsService.registerOperation('update_product', this.createProduct());
+    this.operationsService.registerOperation('create_user_product', this.createProduct());
   }
 
 

@@ -3,9 +3,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { SharedModule } from '../shared';
 
-import { ReadCarBrands, ReadProducts, ReadProductsImages, ReadUserProducts } from './services';
+import {
+  CreateProducts,
+  CreateUserProducts,
+  DeleteProductService,
+  DeleteUserProducts,
+  ReadCarBrands,
+  ReadProducts,
+  ReadProductsImages,
+  ReadUserProducts
+} from './services';
 import { FilterNames, ProductImages, Products, UserProductEntity } from './entities';
-import { CreateUserProducts } from './services/create-user-products.service';
 
 
 @Module({
@@ -14,11 +22,14 @@ import { CreateUserProducts } from './services/create-user-products.service';
     SharedModule,
   ],
   providers: [
+    CreateProducts,
+    CreateUserProducts,
     ReadCarBrands,
     ReadProducts,
     ReadUserProducts,
     ReadProductsImages,
-    CreateUserProducts,
+    DeleteProductService,
+    DeleteUserProducts,
   ],
 })
 export class ProductsModule {
