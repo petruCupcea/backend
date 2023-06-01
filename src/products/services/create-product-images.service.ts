@@ -4,26 +4,29 @@ import { InsertResult, Repository } from 'typeorm';
 
 import { OperationsService, RequestStructure, ResponseStructure } from '../../shared';
 
-import { Products } from '../entities';
+import { ProductImages } from '../entities';
 
 
 @Injectable()
 export class CreateProducts {
 
   constructor(
-    @InjectRepository(Products)
-    private readonly repository: Repository<Products>,
+    @InjectRepository(ProductImages)
+    private readonly repository: Repository<ProductImages>,
     private readonly operationsService: OperationsService,
   ) {
-    this.operationsService.registerOperation('create_product', this.createProduct());
+    this.operationsService.registerOperation('create_product_images', this.createProductImages());
   }
 
 
-  private createProduct(): (data: RequestStructure) => Promise<ResponseStructure> {
+  private createProductImages(): (data: RequestStructure) => Promise<ResponseStructure> {
     return (dataReceived: RequestStructure) => {
       return new Promise((resolve) => {
-        const newUserProduct = this.repository.create(dataReceived.payload);
-        this.repository.insert(newUserProduct).then((data: InsertResult) => {
+        const newProductImages: Array<any> = [];
+        dataReceived.payload.imageNames.map((image) => {
+          newProductImages.push(this.repository.create(image));
+        });
+        this.repository.insert(newProductImages).then((data: InsertResult) => {
           const dataToReturn = new ResponseStructure('success', {id: data?.identifiers[0]});
           console.log(dataToReturn);
           resolve(dataToReturn);
