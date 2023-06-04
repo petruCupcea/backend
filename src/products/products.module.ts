@@ -11,7 +11,7 @@ import {
   ReadCarBrands,
   ReadProducts,
   ReadProductsImages,
-  ReadUserProducts
+  ReadUserProducts, UpdateProducts
 } from './services';
 import { FilterNames, ProductImages, Products, UserProductEntity } from './entities';
 
@@ -28,6 +28,7 @@ import { FilterNames, ProductImages, Products, UserProductEntity } from './entit
     ReadProducts,
     ReadUserProducts,
     ReadProductsImages,
+    UpdateProducts,
     DeleteProductService,
     DeleteUserProducts,
   ],

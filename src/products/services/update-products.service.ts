@@ -4,11 +4,11 @@ import { Repository } from 'typeorm';
 
 import { OperationsService, RequestStructure, ResponseStructure } from '../../shared';
 
-import { Products, UserProductEntity } from '../entities';
+import { Products } from '../entities';
 
 
 @Injectable()
-export class CreateUserProducts {
+export class UpdateProducts {
 
   constructor(
     @InjectRepository(Products)
@@ -23,7 +23,12 @@ export class CreateUserProducts {
     return (dataReceived: RequestStructure) => {
       return new Promise((resolve) => {
         const updatedProduct = this.repository.create(dataReceived.payload);
-        this.repository.save(updatedProduct).then(() => {
+        this.repository.createQueryBuilder()
+          .update(Products)
+          .set(updatedProduct)
+          .where("id = :id", {id: updatedProduct.id})
+          .execute()
+          .then(() => {
           const dataToReturn = new ResponseStructure('success');
           resolve(dataToReturn);
         }).catch((err) => {
