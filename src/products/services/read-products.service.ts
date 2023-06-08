@@ -44,7 +44,8 @@ export class ReadProducts {
   private getRecommendedProducts(): (data: RequestStructure) => Promise<ResponseStructure> {
     return () => {
       return new Promise((resolve) => {
-        this.repository.find({take: 8}).then((data: Array<Products>) => {
+        this.repository.createQueryBuilder().select().orderBy('RAND()').take(8).getMany()
+          .then((data: Array<Products>) => {
           const dataToReturn = new ResponseStructure('success', data);
           resolve(dataToReturn);
         }).catch((err) => {
