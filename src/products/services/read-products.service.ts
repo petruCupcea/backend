@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 import { OperationsService, RequestStructure, ResponseStructure } from '../../shared';
 
@@ -20,6 +20,7 @@ export class ReadProducts {
     this.operationsService.registerOperation('get_product_by_id', this.getProductById());
     this.operationsService.registerOperation('get_products_by_subcategory', this.getProductsBySubcategory());
     this.operationsService.registerOperation('get_products_by_group', this.getProductsByGroup());
+    this.operationsService.registerOperation('get_products_by_name', this.getProductsByName());
   }
 
 
@@ -113,5 +114,24 @@ export class ReadProducts {
     }
   }
 
+
+  private getProductsByName(): (data: RequestStructure) => Promise<ResponseStructure> {
+    return (dataReceived) => {
+      return new Promise((resolve) => {
+        console.log(dataReceived.payload.productName);
+        this.repository.find({where: {name: Like('%' + dataReceived.payload.productName + '%')}}).then((data: Array<Products>) => {
+          const dataToReturn = new ResponseStructure('success', data);
+          console.log(dataToReturn);
+          resolve(dataToReturn);
+        }).catch((err) => {
+          console.log(err);
+          const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "get_products_by_name" failed!`});
+          resolve(errorResponse);
+        });
+
+        return resolve;
+      });
+    }
+  }
 
 }
