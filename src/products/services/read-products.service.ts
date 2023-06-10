@@ -21,6 +21,7 @@ export class ReadProducts {
     this.operationsService.registerOperation('get_products_by_subcategory', this.getProductsBySubcategory());
     this.operationsService.registerOperation('get_products_by_group', this.getProductsByGroup());
     this.operationsService.registerOperation('get_products_by_name', this.getProductsByName());
+    this.operationsService.registerOperation('get_recommended_products_by_subcategory', this.getRandomProductsBySubcategory());
   }
 
 
@@ -126,6 +127,28 @@ export class ReadProducts {
         }).catch((err) => {
           console.log(err);
           const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "get_products_by_name" failed!`});
+          resolve(errorResponse);
+        });
+
+        return resolve;
+      });
+    }
+  }
+
+
+  private getRandomProductsBySubcategory(): (data: RequestStructure) => Promise<ResponseStructure> {
+    return (dataReceived) => {
+      return new Promise((resolve) => {
+        this.repository.createQueryBuilder()
+          .select()
+          .where('subcategoryId = :subcategoryId && id <> :id', { subcategoryId: dataReceived.payload.subcategoryId, id: dataReceived.payload.productId })
+          .orderBy('RAND()').take(4).getMany()
+          .then((data: Array<Products>) => {
+            const dataToReturn = new ResponseStructure('success', data);
+            resolve(dataToReturn);
+          }).catch((err) => {
+          console.log(err);
+          const errorResponse = new ResponseStructure('alert-popup', {message: `Operation "get_products" failed!`});
           resolve(errorResponse);
         });
 
